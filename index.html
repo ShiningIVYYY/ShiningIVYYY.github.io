@@ -1,11 +1,701 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>我的个人网站</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShiningIVYYY | 个人主页</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --paper: #f5f0e8;
+      --accent: #c0392b;
+      --muted: #7a7068;
+      --line: rgba(26,26,46,0.12);
+      --gold: #b8860b;
+      --hover-bg: rgba(192,57,43,0.06);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 300;
+      line-height: 1.85;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse at 80% 10%, rgba(192,57,43,0.04) 0%, transparent 55%),
+        radial-gradient(ellipse at 10% 90%, rgba(184,134,11,0.05) 0%, transparent 50%);
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ─── DECORATIVE LINES ─── */
+    .page-rule {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+      margin: 0;
+    }
+
+    /* ─── LAYOUT ─── */
+    .wrapper {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      padding: 72px 0 56px;
+      text-align: center;
+      position: relative;
+    }
+
+    .site-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.1s forwards;
+    }
+
+    .site-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--ink);
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.25s forwards;
+    }
+
+    .site-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 16px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.4s forwards;
+    }
+
+    .header-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 36px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.55s forwards;
+    }
+
+    .header-ornament .line-seg {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+
+    .header-ornament .line-seg:last-child {
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .ornament-diamond {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      padding: 28px 0;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.65s forwards;
+    }
+
+    nav a {
+      font-family: 'DM Mono', monospace;
+      font-size: 11.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.25s;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 56px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.9s ease forwards;
+    }
+
+    section:nth-child(1) { animation-delay: 0.7s; }
+    section:nth-child(2) { animation-delay: 0.85s; }
+    section:nth-child(3) { animation-delay: 1s; }
+    section:nth-child(4) { animation-delay: 1.15s; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--line), transparent);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+
+    .section-body {
+      font-size: 15.5px;
+      color: #3a3730;
+      line-height: 1.9;
+    }
+
+    .section-body p + p {
+      margin-top: 14px;
+    }
+
+    /* ─── FEATURED BLOG CARD ─── */
+    .blog-card {
+      margin-top: 36px;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      padding: 32px 36px;
+      position: relative;
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(4px);
+      transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      box-shadow: 0 12px 48px rgba(26,26,46,0.08);
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.7);
+    }
+
+    .blog-card-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .blog-card-meta .tag {
+      background: var(--hover-bg);
+      color: var(--accent);
+      border: 1px solid rgba(192,57,43,0.2);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    .blog-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .blog-card-desc {
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    .blog-card-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s;
+      border-radius: 1px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: #a93226;
+      border-color: #a93226;
+      box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--ink);
+      background: rgba(26,26,46,0.04);
+    }
+
+    /* ─── SKILLS GRID ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      margin-top: 32px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .skill-item {
+      padding: 24px 28px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.3);
+      transition: background 0.25s;
+    }
+
+    .skill-item:hover {
+      background: rgba(255,255,255,0.7);
+    }
+
+    .skill-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .skill-bar-track {
+      height: 2px;
+      background: var(--line);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      border-radius: 2px;
+      transform-origin: left;
+      animation: growBar 1.2s ease 1.5s both;
+    }
+
+    @keyframes growBar {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    /* ─── LINKS SECTION ─── */
+    .links-list {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--ink);
+      transition: all 0.2s;
+      group: true;
+    }
+
+    .link-row:hover {
+      color: var(--accent);
+      padding-left: 8px;
+    }
+
+    .link-row-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .link-icon {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .link-row:hover .link-icon {
+      border-color: var(--accent);
+      background: var(--hover-bg);
+    }
+
+    .link-label {
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .link-sublabel {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    .link-arrow {
+      font-size: 14px;
+      color: var(--muted);
+      transition: transform 0.2s;
+    }
+
+    .link-row:hover .link-arrow {
+      transform: translateX(4px);
+      color: var(--accent);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer-text a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      transition: color 0.2s;
+    }
+
+    .footer-text a:hover {
+      color: var(--ink);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      .wrapper { padding: 0 20px; }
+      header { padding: 48px 0 36px; }
+      nav { gap: 20px; flex-wrap: wrap; }
+      .blog-card { padding: 24px 20px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .btn { padding: 9px 16px; font-size: 10px; }
+    }
+  </style>
 </head>
 <body>
-    <h1>欢迎来到我的个人网站</h1>
-    <p>这是我用 GitHub Pages 搭建的网站123445</p>
-    <a href="survival_analysis_final_report.html">我的第一篇Word博客</a>
+
+  <div class="wrapper">
+
+    <!-- ─── HEADER ─── -->
+    <header>
+      <div class="site-eyebrow">Personal Research Site · GitHub Pages</div>
+      <h1 class="site-name">Shining<em>IVYYY</em></h1>
+      <p class="tagline">Statistics · Survival Analysis · Data Science</p>
+      <div class="header-ornament">
+        <span class="line-seg"></span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-diamond" style="opacity:0.4; transform: rotate(45deg) scale(0.7)"></span>
+        <span class="ornament-diamond"></span>
+        <span class="line-seg"></span>
+      </div>
+    </header>
+
+    <div class="page-rule"></div>
+
+    <!-- ─── NAV ─── -->
+    <nav>
+      <a href="#about">About</a>
+      <a href="#writing">Writing</a>
+      <a href="#skills">Skills</a>
+      <a href="#links">Contact</a>
+    </nav>
+
+    <div class="page-rule"></div>
+
+    <!-- ─── ABOUT ─── -->
+    <section id="about">
+      <div class="section-label">About</div>
+      <h2 class="section-title">Welcome to my corner of the web.</h2>
+      <div class="section-body">
+        <p>
+          我是IVY，一名专注于统计学与数据科学的研究者。
+          对生存分析、因果推断和医学统计有着浓厚的兴趣，喜欢用数据讲述有深度的故事。
+        </p>
+        <p>
+          这里是我记录学习、分享研究成果的地方——
+          从方法论的细节到实际案例的应用，希望能带来一些有价值的思考。
+        </p>
+      </div>
+    </section>
+
+    <div class="page-rule"></div>
+
+    <!-- ─── FEATURED WRITING ─── -->
+    <section id="writing">
+      <div class="section-label">Writing</div>
+      <h2 class="section-title">Featured Report</h2>
+      <div class="section-body">
+        <p>近期发布的研究报告，探索统计方法在真实数据场景中的应用。</p>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-card-meta">
+          <span>2025</span>
+          <span class="tag">Survival Analysis</span>
+          <span class="tag">Statistics</span>
+        </div>
+        <h3 class="blog-card-title">生存分析综合报告<br><span style="font-style:italic; font-size:18px; color:var(--muted)">Survival Analysis Final Report</span></h3>
+        <p class="blog-card-desc">
+          本报告深入探讨生存分析的核心方法——Kaplan-Meier估计、Cox比例风险模型、
+          竞争风险模型等，结合真实数据集进行全面分析与可视化。
+          适合对临床统计与时间事件数据感兴趣的读者。
+        </p>
+        <div class="blog-card-actions">
+          <a class="btn btn-primary"
+             href="https://shiningivyyy.github.io/survival_analysis_final_report.html"
+             target="_blank" rel="noopener">
+            <span>↗</span> 在线阅读
+          </a>
+          <a class="btn btn-secondary"
+             href="https://raw.githubusercontent.com/ShiningIVYYY/ShiningIVYYY.github.io/main/survival_analysis_final_report.html"
+             download="survival_analysis_final_report.html">
+            <span>↓</span> 下载报告
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-rule"></div>
+
+    <!-- ─── SKILLS ─── -->
+    <section id="skills">
+      <div class="section-label">Skills &amp; Tools</div>
+      <h2 class="section-title">Methods &amp; Technologies</h2>
+
+      <div class="skills-grid">
+        <div class="skill-item">
+          <div class="skill-name">R / tidyverse</div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="width:90%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-name">Survival Analysis</div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="width:88%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-name">Python / pandas</div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="width:78%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-name">Statistical Modeling</div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="width:85%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-name">Data Visualization</div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="width:80%"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-name">R Markdown / Quarto</div>
+          <div class="skill-bar-track">
+            <div class="skill-bar-fill" style="width:82%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-rule"></div>
+
+    <!-- ─── LINKS ─── -->
+    <section id="links">
+      <div class="section-label">Find me</div>
+      <h2 class="section-title">Links</h2>
+
+      <div class="links-list">
+        <a class="link-row" href="https://github.com/ShiningIVYYY" target="_blank" rel="noopener">
+          <div class="link-row-left">
+            <div class="link-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/>
+              </svg>
+            </div>
+            <div>
+              <div class="link-label">GitHub</div>
+              <div class="link-sublabel">@ShiningIVYYY</div>
+            </div>
+          </div>
+          <span class="link-arrow">→</span>
+        </a>
+
+        <a class="link-row" href="https://shiningivyyy.github.io/survival_analysis_final_report.html" target="_blank" rel="noopener">
+          <div class="link-row-left">
+            <div class="link-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+              </svg>
+            </div>
+            <div>
+              <div class="link-label">生存分析报告</div>
+              <div class="link-sublabel">Survival Analysis Final Report</div>
+            </div>
+          </div>
+          <span class="link-arrow">→</span>
+        </a>
+
+        <a class="link-row" href="mailto:shining2024ds@gmail.com">
+          <div class="link-row-left">
+            <div class="link-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div>
+              <div class="link-label">Email</div>
+              <div class="link-sublabel">Get in touch</div>
+            </div>
+          </div>
+          <span class="link-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="page-rule"></div>
+
+    <!-- ─── FOOTER ─── -->
+    <footer>
+      <p class="footer-text">
+        © 2025 ShiningIVYYY · Built with care ·
+        <a href="https://github.com/ShiningIVYYY/ShiningIVYYY.github.io" target="_blank" rel="noopener">Source on GitHub</a>
+      </p>
+    </footer>
+
+  </div><!-- /wrapper -->
+
 </body>
 </html>
